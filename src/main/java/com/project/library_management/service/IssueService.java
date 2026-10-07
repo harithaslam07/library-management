@@ -23,7 +23,7 @@ public class IssueService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public IssueResponse issueBook(Long bookId, Long memberId) {
+    public Issue issueBook(Long bookId, Long memberId) {
 
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new RuntimeException("Book not found: " + bookId));
@@ -48,8 +48,7 @@ public class IssueService {
         issue.setIssueDate(LocalDate.now());
         issue.setDueDate(LocalDate.now().plusDays(LOAN_DAYS));
         issue.setFine(0);
-        Issue saved = issueRepository.save(issue);                         // CHANGED: keep the saved entity
-        return IssueResponse.from(saved);
 
+        return issueRepository.save(issue);
     }
 }
