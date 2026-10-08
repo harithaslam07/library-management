@@ -1,6 +1,7 @@
 package com.project.library_management.controller;
 
-import com.project.library_management.model.Member;
+import com.project.library_management.DTO.MemberRequest;
+import com.project.library_management.DTO.MemberResponse;
 import com.project.library_management.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +19,17 @@ public class MemberController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Member add(@Valid @RequestBody Member member) {
-        return memberService.addMember(member);
+    public MemberResponse add(@Valid @RequestBody MemberRequest request) {
+        return memberService.addMember(request);
     }
 
     @GetMapping
-    public List<Member> getAll() {
+    public List<MemberResponse> getAll() {
         return memberService.getAllMembers();
     }
 
     @GetMapping("/{id}")
-    public Member getOne(@PathVariable Long id) {
+    public MemberResponse getOne(@PathVariable Long id) {
         return memberService.getMember(id);
     }
 }

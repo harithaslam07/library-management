@@ -1,13 +1,14 @@
 package com.project.library_management.controller;
 
-import com.project.library_management.model.Book;
+import com.project.library_management.DTO.BookRequest;
+import com.project.library_management.DTO.BookResponse;
+import com.project.library_management.DTO.PageResponse;
 import com.project.library_management.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -18,23 +19,26 @@ public class BookController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Book add(@Valid @RequestBody Book book) {
-        return bookService.addBook(book);
+    public BookResponse add(@Valid @RequestBody BookRequest request) {
+        return bookService.addBook(request);
     }
 
     @GetMapping
-    public List<Book> getAll() {
-        return bookService.getAllBooks();
+    public PageResponse<BookResponse> getAll(@RequestParam(required = false) String category,
+                                             @RequestParam(required = false) String author,
+                                             @RequestParam(required = false) String title,
+                                             Pageable pageable) {
+        return bookService.searchBooks(category, author, title, pageable);
     }
 
     @GetMapping("/{id}")
-    public Book getOne(@PathVariable Long id) {
+    public BookResponse getOne(@PathVariable Long id) {
         return bookService.getBook(id);
     }
 
     @PutMapping("/{id}")
-    public Book update(@PathVariable Long id, @Valid @RequestBody Book book) {
-        return bookService.updateBook(id, book);
+    public BookResponse update(@PathVariable Long id, @Valid @RequestBody BookRequest request) {
+        return bookService.updateBook(id, request);
     }
 
     @DeleteMapping("/{id}")

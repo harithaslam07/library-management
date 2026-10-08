@@ -1,7 +1,7 @@
 package com.project.library_management.controller;
 
 import com.project.library_management.DTO.IssueRequest;
-import com.project.library_management.model.Issue;
+import com.project.library_management.DTO.IssueResponse;
 import com.project.library_management.service.IssueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,12 @@ public class IssueController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Issue issueBook(@Valid @RequestBody IssueRequest request) {
+    public IssueResponse issueBook(@Valid @RequestBody IssueRequest request) {
         return issueService.issueBook(request.getBookId(), request.getMemberId());
+    }
+
+    @PostMapping("/{id}/return")
+    public IssueResponse returnBook(@PathVariable Long id) {
+        return issueService.returnBook(id);
     }
 }
